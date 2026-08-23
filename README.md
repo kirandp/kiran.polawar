@@ -82,8 +82,33 @@ Then in the Render dashboard: **New** → **Blueprint** → connect the repo →
 
 In the Render dashboard, open the Static Site → **Settings** → **Custom Domains**, add your domain, and update your DNS records as instructed.
 
+## Deploy on GitHub Pages
+
+GitHub Pages builds and hosts the site for free from this repo. A GitHub Actions workflow (`.github/workflows/deploy.yml`) automates the build and deploy.
+
+### Steps
+
+1. Make sure all changes are committed and pushed to `master` (the workflow triggers on push to `master`).
+2. In your repo on GitHub, go to **Settings** → **Pages**.
+3. Under **Build and deployment** → **Source**, select **GitHub Actions**.
+4. Push to `master` (or click **Actions** → *Deploy to GitHub Pages* → **Run workflow**) to trigger the build.
+5. After the workflow finishes, your site is live at:
+   ```
+   https://<your-username>.github.io/<repo-name>/
+   ```
+
+### How it works
+
+- The workflow runs `npm install` and `npm run build`, then uploads the `dist/` folder as a Pages artifact.
+- `vite.config.js` uses `base: "./"` (relative paths) so assets load correctly on the `github.io/<repo>` subpath.
+- Every push to `master` redeploys automatically.
+
+### Custom Domain (Optional)
+
+In **Settings** → **Pages** → **Custom Domain**, add your domain and update your DNS records as instructed.
+
 ## Updating Content
 
 - Edit `index.html` for static text (hero, about, contact, links).
 - Edit `src/main.js` arrays (`skillCategories`, `experiences`, `projects`) to change skills, experience, and projects.
-- Rebuild with `npm run build` (Render does this automatically on deploy).
+- Rebuild with `npm run build` (Render / GitHub Pages does this automatically on deploy).
